@@ -4,6 +4,7 @@ Step 1:
 
 create Namespace
 
+`kubectl create namespace fpm`
 create deploy image: prometheus
 
 forward-node
@@ -14,21 +15,16 @@ try it out.
 
 prom/prometheus
 
-
+`kubectl create deployment prometheus --image=prom/prometheus -n fpm`
 
 open the dashboard of the prometheus 9090
 
 Create a service for the server
 
-
-
-`kubectl create service nodeport fpm-svc --tcp=9090:9090 -n fpm`
-
+`kubectl expose deployment prometheus --type=NodePort -n fpm`
 
 
 Store the ConfigMap in the kubenetes.
-
-
 
 
 
