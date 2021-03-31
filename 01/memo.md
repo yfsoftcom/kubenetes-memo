@@ -43,8 +43,18 @@ you should get the `Hello, my host is xxxxxxx, version: beta`
 
 Store the ConfigMap in the kubenetes.
 
+`kubectl create configmap echo-go-version --from-literal=version=v2 -n fpm`
+
+Attach the configmap into the deployment.
+
+Set env for the deployment
+
+`kubectl set env deployment echo-go version=2.1 -n fpm`
+
 
 Scale the pods.
+
+`kubectl scale deployment echo-go --replicas=3 -n fpm`
 
 ``
 
@@ -55,11 +65,11 @@ Rollout && Rollback the image version.
 
 
 Tag the pods
-
+`kubectl label po echo-go-75f76c6b78-8smjk env=qa -n fpm`
 
 
 Get the tags
-
+`kubectl get po --show-labels -n fpm`
 
 
 Remove all the pods

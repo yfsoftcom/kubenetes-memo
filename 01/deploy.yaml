@@ -1,10 +1,98 @@
 ## here is the deploy yaml of the prometheus
-
+## your can type kubectl explain namespace to get more info
 ## namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fpm
+  labels:
+    env: dev
 
 ## configMap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: echo-go-config
+  namespace: fpm
+  labels:
+    env: dev
+data:
+  version: test
 
 ## deployment
-
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-go
+  namespace: fpm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: echo-go
+  template:
+    metadata:
+      name: template-echo-go
+      namespace: fpm
+      labels:
+        app: echo-go
+    spec:
+      containers:
+      - image: yfsoftcom/echo-go:1.0
+        name: echo-go
+        envFrom:
+        - configMapRef:
+            name: echo-go-config
+        ## just define a key/value declaratively
+        # env:
+        # - name: version
+        #   value: '2.2'
+        ## define a specific key/value from the configMap
+        # env:
+        # - name: version
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: echo-go-config
+        #       key: version
+        # imagePullPolicy: Always
+        # ports:
+        #   8080:8080
 ## service
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-echo-go
+  namespace: fpm
+spec:
+  type: NodePort
+  ## this means you will bind with a specific pod, your api call will be served by the same one.
+  # sessionAffinity: ClientIP
+  selector:
+    app: echo-go
+  ports:
+    # the port of the node
+  - nodePort: 31000
+    # the port of the service
+    port: 80
+    # the port of the pod
+    targetPort: 8080
 
+## ingress
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-echo-go
+  namespace: fpm
+spec:
+  rules:
+  - host: dev.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: service-echo-go
+          servicePort: 80
