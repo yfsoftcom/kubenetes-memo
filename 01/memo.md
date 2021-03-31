@@ -13,22 +13,29 @@ try it out.
 
 
 
-prom/prometheus
+yfsoftcom/echo-go
 
-`kubectl create deployment prometheus --image=prom/prometheus -n fpm`
+`kubectl create deployment echo-go --image=yfsoftcom/echo-go -n fpm`
 
-open the dashboard of the prometheus 9090
 
 Create a service for the server
 
-`kubectl expose deployment prometheus --type=NodePort -n fpm`
+`kubectl expose deployment echo-go --type=NodePort --port=8080 --target-port=8080 --protocol=TCP -n fpm`
+
+
+get the response of the `/foo` api
+
+`curl localhost:8080/foo`
+
+you should get the `Hello, my host is xxxxxxx, version: beta`
 
 
 Store the ConfigMap in the kubenetes.
 
 
-
 Scale the pods.
+
+``
 
 
 
