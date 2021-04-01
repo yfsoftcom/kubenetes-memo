@@ -51,10 +51,10 @@ spec:
       volumes:
         - name: redis-aof
           hostPath:
-            path:  /Users/wangfan/Workdir/fpm/kubenetes-memo/vol
+            path:  /Users/yfsoft/Work/kubenetes-memo/vol
         - name: redis-conf
           hostPath:
-            path: /Users/wangfan/Workdir/fpm/kubenetes-memo/02/redis.conf
+            path: /Users/yfsoft/Work/kubenetes-memo/02/redis.conf
 
 # service
 ---

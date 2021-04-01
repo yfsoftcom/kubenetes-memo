@@ -1,7 +1,7 @@
 
 
 dev:
-	version=dev go run main.go
+	version=dev redis_url=localhost:6379 redis_pass=admin123 go run main.go
 
 build:
 	docker build --build-arg version=beta -t yfsoftcom/echo-go:$(tag) .
