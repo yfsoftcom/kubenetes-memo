@@ -15,5 +15,11 @@ run-local:
 apply:
 	kubectl apply -f $(folder)/deploy.yaml
 
+clean:
+	kubectl delete namespace fpm
+
+switch-ns:
+	kubectl config set-context --current --namespace=$(ns)
+
 inspect-log:
 	docker logs -f echo-go

@@ -1,0 +1,74 @@
+# run a redis server
+# config map for the redis conf
+# volume AOF file
+
+# nice to have: multi-node
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  fpm
+
+
+# should from the redis.conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-config
+  namespace: fpm
+  labels:
+    app: redis
+data:
+  config: ''
+
+# deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-server
+  namespace: fpm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      name: redis-deploy
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis-server
+        image: redis:alpine3.11
+        volumeMounts:
+          - name:  redis-aof
+            mountPath:  /data
+          - name: redis-conf
+            mountPath: /usr/local/etc/redis/redis.conf
+      volumes:
+        - name: redis-aof
+          hostPath:
+            path:  /Users/wangfan/Workdir/fpm/kubenetes-memo/vol
+        - name: redis-conf
+          hostPath:
+            path: /Users/wangfan/Workdir/fpm/kubenetes-memo/02/redis.conf
+
+# service
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  svc-redis-server
+  namespace: fpm
+spec:
+  selector:
+    app:  redis
+  type:  NodePort
+  ports:
+  - name:  name-of-the-port
+    nodePort: 31000
+    port: 6379
+    targetPort:  6379
