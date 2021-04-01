@@ -34,7 +34,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
   apk --no-cache add ca-certificates && \
   apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-  echo "Asia/Shanghai" > /etc/timezone
+  echo "Asia/Shanghai" > /etc/timezone && \
+  mkdir -p /app/logs
 
 WORKDIR /app
 

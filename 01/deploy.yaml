@@ -40,11 +40,15 @@ spec:
         app: echo-go
     spec:
       containers:
-      - image: yfsoftcom/echo-go:1.0
+      - image: yfsoftcom/echo-go:1.1.1
         name: echo-go
         envFrom:
         - configMapRef:
             name: echo-go-config
+        volumeMounts:
+        - mountPath: /app/logs
+          name: vol-test
+
         ## just define a key/value declaratively
         # env:
         # - name: version
@@ -59,6 +63,11 @@ spec:
         # imagePullPolicy: Always
         # ports:
         #   8080:8080
+      volumes:
+      - name: vol-test
+        hostPath:
+          path: /Users/yfsoft/Work/kubenetes-memo/vol
+          type: Directory
 ## service
 --- 
 apiVersion: v1

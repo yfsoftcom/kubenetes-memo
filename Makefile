@@ -12,5 +12,8 @@ push:
 run-local:
 	docker run -p 8080:8080 --rm --name=echo-go -d yfsoftcom/echo-go:$(tag)
 
+apply:
+	kubectl apply -f 01/deploy.yaml
+
 inspect-log:
 	docker logs -f echo-go

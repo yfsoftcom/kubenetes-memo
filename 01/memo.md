@@ -74,7 +74,16 @@ Get the tags
 
 Remove all the pods
 
+`kubectl delete namespace fpm`
 
+
+### Volume
+
+Create a hosted local filesystem, and mounted it to the pod.
+
+simple way is define a `hostPath` volume.
+
+but as you know, this just can be apply the single node. coz it just share the host filesystem.
 
 
 
