@@ -29,6 +29,7 @@ func main() {
 	v := os.Getenv("version")
 	log.Printf("hi there, i am from %s", hostname)
 
+	log.Printf("redis_addr: %s\n", os.Getenv("redis_addr"))
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("redis_addr"),
 		Password: os.Getenv("redis_pass"), // no password set

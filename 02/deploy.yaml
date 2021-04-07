@@ -36,7 +36,6 @@ spec:
       app: redis
   template:
     metadata:
-      name: redis-deploy
       labels:
         app: redis
     spec:
@@ -61,14 +60,65 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name:  svc-redis-server
+  name:  redis-server
   namespace: fpm
 spec:
   selector:
     app:  redis
+  # type:  NodePort
+  ports:
+  - port: 6379
+    # nodePort: 31000
+    targetPort:  6379
+
+# app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-go-deployment
+  namespace: fpm
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: echo-go
+  template:
+    metadata:
+      labels:
+        app: echo-go
+    spec:
+      containers:
+      - name: echo-go
+        image: yfsoftcom/echo-go:2.0.1
+        ports:
+          - containerPort: 8080
+        env:
+          - name: redis_addr
+            value: redis-server:6379
+          - name: version
+            value: test2.1
+        volumeMounts:
+          - name:  log-dir
+            mountPath: /app/logs
+      volumes:
+        - name: log-dir
+          hostPath:
+            path:  /Users/yfsoft/Work/kubenetes-memo/logs
+            type: Directory
+
+# expose the echo-go
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: fpm
+  name: echo-go
+spec:
+  selector:
+    app: echo-go
   type:  NodePort
   ports:
-  - name:  name-of-the-port
-    nodePort: 31000
-    port: 6379
-    targetPort:  6379
+  - port: 8080
+    nodePort: 31080
+    targetPort: 8080
