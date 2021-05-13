@@ -18,7 +18,7 @@ ENV GO111MODULE=on \
 WORKDIR /app
 
 # copy the source code and the package control file
-COPY go.mod main.go .
+COPY go.mod main.go ./
 # download the dependence and build the source
 RUN go mod download && \
   CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -ldflags="-s -w" -o /app/bin/app /app/main.go
