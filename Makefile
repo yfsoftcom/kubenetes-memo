@@ -13,6 +13,7 @@ run-local:
 	docker run -p 8080:8080 --rm --name=echo-go -d yfsoftcom/echo-go:$(tag)
 
 apply:
+	sudo mkdir -p /home/k8s_vol
 	kubectl apply -f $(folder)/deploy.yaml
 
 clean:
