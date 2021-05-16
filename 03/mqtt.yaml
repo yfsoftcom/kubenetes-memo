@@ -1,0 +1,61 @@
+# mqtt broker
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emqx
+  namespace: fpm
+spec:
+  selector:
+    matchLabels:
+      app: emqx
+  template:
+    metadata:
+      labels:
+        app: emqx
+    spec:
+      containers:
+      - name: emqx
+        image: emqx/emqx:v4.1-rc.2 
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 1883
+        env:
+          - name: EMQX_ALLOW_ANONYMOUS
+            value: "false"
+          - name: EMQX_LISTENER__TCP__EXTERNAL
+            value: "1883"
+          - name: EMQX_LISTENER__TCP__EXTERNAL__ACCEPTORS
+            value: "64"
+          - name: EMQX_LISTENER__TCP__EXTERNAL__MAX___CONNECTIONS
+            value: "1024000"
+          - name: EMQX_NODE__PROCESS___LIMIT
+            value: "2097152"
+          - name: EMQX_NODE__MAX___PORTS
+            value: "1048576"
+          - name: EMQX_LOADED_PLUGINS
+            value: "emqx_management,emqx_auth_pgsql,emqx_recon,emqx_retainer,emqx_rule_engine,emqx_dashboard"
+            
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emqx
+  namespace: fpm
+spec:
+  selector:
+    app: emqx
+  type: NodePort
+  ports:
+  - port: 1883
+    targetPort: 1883
+  - port: 8081
+    targetPort: 8081
+  - port: 8083
+    targetPort: 8083
+  - port: 18083
+    targetPort: 18083
