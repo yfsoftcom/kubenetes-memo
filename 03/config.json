@@ -1,0 +1,153 @@
+{
+  "server":{
+    "port": 19502
+  },
+  "mysql":
+  {
+    "host": "172.19.24.124",
+    "port": 3306,
+    "database": "fpm_open_iot",
+    "username": "root",
+    "password": "741235896",
+    "showSql": true
+  },
+  "redis":
+  {
+    "host": "172.19.24.124",
+    "port": 6379,
+    "auth": {
+      "password": "admin123"
+    }
+  },
+  "middlewareDomain": "http://open.yunplus.io:19580",
+  "urlPrefix": "http://open.yunplus.io:19502",
+  "preDownloadURL": "http://open.yunplus.io:19502/download/",
+  "upload":{
+    "dir": "public/uploads/",
+    "field": "upload",
+    "uploadRouter": "/upload",
+    "base": "/uploads/",
+    "accept": [
+        "application/octet-stream",
+        "application/json",
+        "application/zip",
+        "application/x-zip-compressed",
+        "image/png",
+        "video/mp4",
+        "image/jpeg"],
+    "limit": 50,
+    "storage": "disk"
+  },
+  "influx": {
+      "database": "fpmiot",
+      "username": "",
+      "password": "",
+      "hosts": [
+        { "host": "172.19.24.124" , "port": 8086}
+      ],
+      "schema": [{
+        "measurement": "environment",
+        "tags": ["vid", "uid", "pid", "fn", "network", "sid", "year", "month", "date", "day", "week"],
+        "fields": {
+          "payload": 2,
+          "extra": 0,
+          "sn_id": 2,
+          "opcode": 1,
+          "device_type": 1,
+          "min_wind_dir": 1,
+          "avg_wind_dir": 1,
+          "max_wind_dir": 1,
+          "min_wind_speed": 1,
+          "avg_wind_speed": 1,
+          "max_wind_speed": 1,
+          "temp": 1,
+          "humidity": 1,
+          "pressure": 1,
+          "rainfall": 1,
+          "radiation": 1,
+          "u_rays": 1,
+          "noise": 1,
+          "pm2_5": 1,
+          "pm10": 1
+        }
+      },{
+        "measurement": "light",
+        "tags": ["v", "ns", "pid", "event", "network","nb", "sn", "cgi", "year", "month", "date", "day", "week"],
+        "fields": {
+          "payload": 2,
+          "lightingStatus": 0,
+          "recordtime": 2,
+          "brightness":0,
+          "electricity":0,
+          "voltage": 0,
+          "brand": 2,
+          "version": 2,
+          "totalActivePower": 0,
+          "extra": 2,
+          "alarmType": 2,
+          "alarmMessage": 2,
+          "online": 2,
+          "switcher": 2,
+          "duration": 0,
+          "frequency": 0,
+          "current": 0,
+          "activePower": 0,
+          "deactivePower": 0,
+          "apparentPower": 0,
+          "powerFactor": 0,
+          "activeEnergy": 0,
+          "dactiveEnergy": 0,
+          "apparentEnergy": 0,
+          "temperature": 0,
+          "nbcsq": 2,
+          "workmode": 2,
+          "online_unit": 2,
+          "switcher_unit": 2,
+          "brightness_unit": 2,
+          "duration_unit": 2,
+          "frequency_unit": 2,
+          "voltage_unit": 2,
+          "current_unit": 2,
+          "activePower_unit": 2,
+          "deactivePower_unit": 2,
+          "apparentPower_unit": 2,
+          "powerFactor_unit": 2,
+          "activeEnergy_unit": 2,
+          "dactiveEnergy_unit": 2,
+          "apparentEnergy_unit": 2,
+          "temperature_unit": 2,
+          "nbcsq_unit": 2,
+          "workmode_unit": 2
+        }
+      },{
+        "measurement":"alarm",
+        "tags": ["v", "ns", "pid", "event", "network","nb", "sn", "cgi", "year", "month", "date", "day", "week"],
+        "fields":{
+          "alarmType": 0,
+          "recordtime": 2,
+          "brand": 2,
+          "version": 2,
+          "extra": 2
+        }
+      },{
+        "measurement":"charger",
+        "tags": ["serialNum","connectorId"],
+        "fields":{
+          "chargeStartTime": 2,
+          "chargeEndTime": 2,
+          "chargeEnergy": 0,
+          "chargeTime": 0,
+          "chargeCost": 0,
+          "orderStatus": 2,
+          "closeType": 2,
+          "dataType": 2
+        }
+      }]
+    },
+    "mqttserver": {    
+      "host": "172.19.24.124",    
+      "port": 1883,    
+      "username": "fpmuser",    
+      "password": "fpmpassword"  
+    }
+}

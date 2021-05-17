@@ -12,8 +12,12 @@ push:
 run-local:
 	docker run -p 8080:8080 --rm --name=echo-go -d yfsoftcom/echo-go:$(tag)
 
+init-vol:
+	sudo mkdir -p /opt/k8s/vol
+	sudo chmod 777 -R /opt/k8s/
+
 apply:
-	sudo mkdir -p /home/k8s_vol
+	@make init-vol
 	kubectl apply -f $(folder)/deploy.yaml
 
 clean:
