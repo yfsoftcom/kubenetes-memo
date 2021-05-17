@@ -52,10 +52,62 @@ spec:
   type: NodePort
   ports:
   - port: 1883
+    name: mqtt
     targetPort: 1883
   - port: 8081
+    name: http
     targetPort: 8081
   - port: 8083
+    name: websocket
     targetPort: 8083
   - port: 18083
+    name: dashboard
     targetPort: 18083
+
+# for middleware
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iotmiddleware
+  namespace: fpm
+spec:
+  selector:
+    matchLabels:
+      app: iotmiddleware
+  template:
+    metadata:
+      labels:
+        app: iotmiddleware
+    spec:
+      containers:
+      - name: iotmiddleware
+        image: yfsoftcom/fpm-iot-middleware:v2.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+          - name: FPM_DEPLOY_MODE
+            value: PROD
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iotmiddleware
+spec:
+  selector:
+    app: iotmiddleware
+  type: NodePort
+  ports:
+  - port: 5002
+    name: tcp
+    targetPort: 5002
+  - port: 9999
+    name: http
+    targetPort: 19580
+  - port: 18443
+    name: https
+    targetPort: 18443
